@@ -11,6 +11,7 @@ Source0:	http://www.mushware.com/files/%{name}-%{version}.tar.bz2
 URL:		http://www.mushware.com/
 License:	GPL
 Group:		Sciences/Mathematics
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	Mesa-common-devel MesaGLU-devel pcre-devel expat-devel
 BuildRequires:	ungif-devel tiff-devel SDL-devel SDL_mixer-devel
 
