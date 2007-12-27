@@ -1,19 +1,21 @@
-%define	name	tesseracttrainer
-%define	version	0.1.3
-%define	rel	1
-%define	release	%mkrel %{rel}
-
 Summary:	Tesseract Trainer
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
-Source0:	http://www.mushware.com/files/%{name}-%{version}.tar.bz2
+Name:		tesseracttrainer
+Version:	0.1.4
+Release:	%mkrel 1
+Source0:	http://www.mushware.com/files/%{name}-%{version}.tar.gz
+Patch0:		tesseracttrainer-0.1.4-build.patch
 URL:		http://www.mushware.com/
-License:	GPL
+License:	GPLv2
 Group:		Sciences/Mathematics
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
-BuildRequires:	Mesa-common-devel MesaGLU-devel pcre-devel expat-devel
-BuildRequires:	ungif-devel tiff-devel SDL-devel SDL_mixer-devel
+BuildRequires:	Mesa-common-devel
+BuildRequires:	MesaGLU-devel
+BuildRequires:	pcre-devel
+BuildRequires:	expat-devel
+BuildRequires:	ungif-devel
+BuildRequires:	tiff-devel
+BuildRequires:	SDL-devel
+BuildRequires:	SDL_mixer-devel
 
 %description
 Tesseract Trainer generates a full screen real time display of a rotating
@@ -35,6 +37,7 @@ of atmosphere.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %configure --program-transform-name=""
@@ -42,54 +45,59 @@ of atmosphere.
 %make CXXFLAGS="$RPM_OPT_FLAGS -fno-omit-frame-pointer"
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 %makeinstall
-install -m644 x11/icons/%{name}.16.png -D $RPM_BUILD_ROOT%{_miconsdir}/%{name}.png
-install -m644 x11/icons/%{name}.32.png -D $RPM_BUILD_ROOT%{_iconsdir}/%{name}.png
-install -m644 x11/icons/%{name}.48.png -D $RPM_BUILD_ROOT%{_liconsdir}/%{name}.png
-mkdir -p $RPM_BUILD_ROOT%{_menudir}
-cat << EOF > $RPM_BUILD_ROOT%{_menudir}/tesseracttrainer
-?package(tesseracttrainer):command="tesseracttrainer" \
-icon="tesseracttrainer.png" needs="X11" section="More Applications/Games/Toys" \
-title="Tesseract Trainer" longtitle="Displays a 4D spinning hypercube"
-?package(tesseracttrainer):command="kfmclient exec %{_docdir}/%{name}-%{version}" \
-icon="tesseracttrainer.png" needs="X11" section="More Applications/Games/Toys" \
-title="Tesseract Trainer Help" longtitle="Documentation for Tesseract Trainer"
+mkdir -p %{buildroot}%{_iconsdir}/hicolor/{16x16,32x32,48x48}/apps
+install -m644 x11/icons/%{name}.16.png %{buildroot}%{_iconsdir}/hicolor/16x16/apps/%{name}.png
+install -m644 x11/icons/%{name}.32.png %{buildroot}%{_iconsdir}/hicolor/32x32/apps/%{name}.png
+install -m644 x11/icons/%{name}.48.png %{buildroot}%{_iconsdir}/hicolor/48x48/apps/%{name}.png
+
+mkdir -p %{buildroot}%{_datadir}/applications
+cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop <<EOF
+[Desktop Entry]
+Name=Tesseract Trainer
+Comment=Displays a 4D spinning hypercube
+Exec=%{_bindir}/%{name} 
+Icon=%{name}
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=Education;Science;Math;Physics;Amusement;
 EOF
 
-cat << EOF > $RPM_BUILD_ROOT%{_bindir}/tesseracttrainer
+cat << EOF > %{buildroot}%{_bindir}/tesseracttrainer
 #!/bin/sh
 cd %{_datadir}/%{name}/system
 exec %{_bindir}/tesseracttrainerbinary
 EOF
-chmod 0755 $RPM_BUILD_ROOT%{_bindir}/tesseracttrainer
+chmod 0755 %{buildroot}%{_bindir}/tesseracttrainer
 
-cat << EOF > $RPM_BUILD_ROOT%{_bindir}/tesseracttrainer-recover
+cat << EOF > %{buildroot}%{_bindir}/tesseracttrainer-recover
 #!/bin/sh
 cd %{_datadir}/%{name}/system
 exec %{_bindir}/tesseracttrainerbinary "load('start_safe.txt')"
 EOF
-chmod 0755 $RPM_BUILD_ROOT%{_bindir}/tesseracttrainer-recover
+chmod 0755 %{buildroot}%{_bindir}/tesseracttrainer-recover
 
 %post
 %{update_menus}
+%{update_icon_cache hicolor}
 
 %postun
 %{clean_menus}
+%{clean_icon_cache hicolor}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc README NEWS AUTHORS data-tesseracttrainer/About_Tesseract_Trainer.pdf
+%doc README NEWS COPYING AUTHORS data-tesseracttrainer/About_Tesseract_Trainer.pdf
 %{_datadir}/tesseracttrainer
 %{_bindir}/tesseracttrainerbinary
 %{_bindir}/tesseracttrainer
 %{_bindir}/tesseracttrainer-recover
-%{_menudir}/tesseracttrainer
-%{_miconsdir}/%{name}.png
-%{_iconsdir}/%{name}.png
-%{_liconsdir}/%{name}.png
+%{_datadir}/applications/mandriva-%{name}.desktop
+%{_iconsdir}/hicolor/*/apps/%{name}.png
 %{_mandir}/man6/%{name}*.6*
 
