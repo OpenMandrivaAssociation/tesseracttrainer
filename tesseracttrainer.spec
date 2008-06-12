@@ -79,13 +79,17 @@ exec %{_bindir}/tesseracttrainerbinary "load('start_safe.txt')"
 EOF
 chmod 0755 %{buildroot}%{_bindir}/tesseracttrainer-recover
 
+%if %mdkversion < 200900
 %post
 %{update_menus}
 %{update_icon_cache hicolor}
+%endif
 
+%if %mdkversion < 200900
 %postun
 %{clean_menus}
 %{clean_icon_cache hicolor}
+%endif
 
 %clean
 rm -rf %{buildroot}
