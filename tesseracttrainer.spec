@@ -1,7 +1,7 @@
 Summary:	Tesseract Trainer
 Name:		tesseracttrainer
 Version:	0.1.4
-Release:	%mkrel 1
+Release:	%mkrel 3
 Source0:	http://www.mushware.com/files/%{name}-%{version}.tar.gz
 Patch0:		tesseracttrainer-0.1.4-build.patch
 URL:		http://www.mushware.com/
