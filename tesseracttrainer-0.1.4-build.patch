@@ -1,0 +1,22 @@
+--- tesseracttrainer/src/Game/GameUtils.h	2007-12-27 12:35:01.000000000 -0800
++++ tesseracttrainer/src/Game/GameUtils.h.new	2007-12-27 12:34:56.000000000 -0800
+@@ -42,7 +42,7 @@
+ {
+ public:
+     static Mushware::U32 Rotate(Mushware::U32 inVal, Mushware::U32 inRot);
+-    static Mushware::U32 GameUtils::HashGenerate(Mushware::U32 inCode);
++    static Mushware::U32 HashGenerate(Mushware::U32 inCode);
+     static bool CodeVerify(const std::string& inCode);
+ };
+ 
+--- tesseracttrainer-0.1.4/src/GL/GLFont.h	2005-06-08 08:56:09.000000000 -0700
++++ tesseracttrainer-0.1.4/src/GL/GLFont.h.new	2007-12-27 12:40:45.000000000 -0800
+@@ -79,7 +79,7 @@
+ class GLFont
+ {
+ public:
+-    GLFont::GLFont(const std::string& inName);
++    GLFont(const std::string& inName);
+ 
+     void RenderCharacter(Mushware::U32 inChar) const;
+     void RenderString(const std::string& inStr, Mushware::tVal inAlign=-1.0) const;
