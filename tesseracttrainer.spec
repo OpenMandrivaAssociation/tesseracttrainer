@@ -4,7 +4,7 @@ Version:	0.1.4
 Release:	%mkrel 6
 Source0:	http://www.mushware.com/files/%{name}-%{version}.tar.gz
 Patch0:		tesseracttrainer-0.1.4-build.patch
-URL:		http://www.mushware.com/
+URL:		https://www.mushware.com/
 License:	GPLv2
 Group:		Sciences/Mathematics
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
